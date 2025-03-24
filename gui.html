@@ -76,17 +76,18 @@
 
     // loadData("filter1.php", "School", "#cboSchool");
 
-    loadData("filterComponent.php?table=sheet2&field=School", "School", "#cboSchool");
-    loadData("filterComponent.php?table=sheet2&field=Track", "Track", "#cboTrack");
-    loadData("filterComponent.php?table=sheet2&field=Strand", "Strand", "#cboStrand");
+    loadData("filterComponent.php", "sheet2", "School", "#cboSchool");
+    loadData("filterComponent.php", "sheet2", "Track", "#cboTrack");
+    loadData("filterComponent.php", "sheet2", "Strand", "#cboStrand");
 
-    function loadData(url, key, selector) {
-        $.post(url, {}, function (msg) {
+    function loadData(url, table, field, selector) {
+        $.post(url, { table, field }, function (msg) {
             var record = JSON.parse(msg);
-            var options = record.map(item => `<option>${item[key]}</option>`).join("");
+            var options = record.map(item => `<option>${item[field]}</option>`).join("");
             $(selector).append(options);
         });
     }
+
 </script>
 
 </html>
