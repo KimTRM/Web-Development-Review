@@ -55,9 +55,9 @@
 
     function loadData(url, table, field, selector, filterField = null, filterValue = null) {
         $.post(url, { table, field, filterField, filterValue }, function (msg) {
+            alert(msg);
             var record = JSON.parse(msg);
-            $(selector).empty().append("<option>Select</option>"); // Reset dropdown
-            var options = record.map(item => `<option>${item[field]}</option>`).join("");
+            var options = record.map(item => `<option>${ item[field] }</option>`).join("");
             $(selector).append(options);
         });
     }
@@ -65,13 +65,15 @@
     $("#cboSchool").on("change", function () {
         var school = $(this).val();
         loadData("filterComponent.php", "sheet2", "Track", "#cboTrack", "School", school);
-        $("#cboStrand").empty().append("<option>Select Strand</option>"); // Reset Strand
+        $("#cboTrack").empty().append("<option>Select Track</option>"); // Reset Strand
+        $("#cboStrand").empty();
     });
 
     $("#cboTrack").on("change", function () {
         var track = $(this).val();
         var school = $("#cboSchool").val();
         loadData("filterComponent.php", "sheet2", "Strand", "#cboStrand", "Track", track);
+        $("#cboStrand").empty().append("<option>Select Strand</option>");
     });
 
     $("#studentForm").submit(function (event) {

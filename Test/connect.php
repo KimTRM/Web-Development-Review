@@ -1,5 +1,4 @@
 <?php
-
 $host = "localhost";
 $username = "root";
 $password = "";
@@ -10,5 +9,4 @@ if (!$conn)
 {
     die("Connection failed: " . mysqli_connect_error());
 }
-
 ?>
