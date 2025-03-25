@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .design {
+            width: 200px;
+            font-size: 20px;
+        }
+    </style>
+
+    <script src="jquery-min.js">
+    </script>
+
+</head>
+
+<body>
+    <form id="studentForm">
+        <select class="design" id="cboSchool" name = "School">
+            <option>Select</option>
+        </select>
+    
+        <br>
+        <br>
+    
+        <select class="design" id="cboTrack" name = "Track">
+            <option>Select</option>
+        </select>
+    
+        <br>
+        <br>
+    
+        <select class="design" id="cboStrand" name = "Strand">
+            <option>Select</option>
+        </select>
+    
+    
+        <input value="" placeholder="LRN" name = "LRN" type="text"
+            style="display:block;min-width:280px;width:80%;padding:5px;height:30px;margin:10px auto 0% auto;">
+        <input value="" placeholder="Name" name = "Name" type="text"
+            style="display:block;min-width:280px;width:80%;padding:5px;height:30px;margin:10px auto 0% auto;">
+        <input value="" placeholder="Age" name = "Age" type="number"
+            style="display:block;min-width:280px;width:80%;padding:5px;height:30px;margin:10px auto 0% auto;">
+        <input value="" placeholder="Gender" name = "Gender" type="text"
+            style="display:block;min-width:280px;width:80%;padding:5px;height:30px;margin:10px auto 0% auto;">
+        <input value="" placeholder="Religion" name = "Religion" type="text"
+            style="display:block;min-width:280px;width:80%;padding:5px;height:30px;margin:10px auto 0% auto;">
+        <button type="submit" value="Submit" type="text"
+            style="display:block;min-width:280px;width:80%;padding:5px;height:40px;margin:10px auto 0% auto;font-family:Arial;font-size:20px;background-color:#aaa;">
+            Submit Message</button>
+    </form>
+    
+</body>
+
+<script>
+
+    loadData("filterComponent.php", "sheet2", "School", "#cboSchool");
+
+    function loadData(url, table, field, selector, filterField = null, filterValue = null) {
+        $.post(url, { table, field, filterField, filterValue }, function (msg) {
+            var record = JSON.parse(msg);
+            $(selector).empty().append("<option>Select</option>"); // Reset dropdown
+            var options = record.map(item => `<option>${item[field]}</option>`).join("");
+            $(selector).append(options);
+        });
+    }
+
+    $("#cboSchool").on("change", function () {
+        var school = $(this).val();
+        loadData("filterComponent.php", "sheet2", "Track", "#cboTrack", "School", school);
+        $("#cboStrand").empty().append("<option>Select Strand</option>"); // Reset Strand
+    });
+
+    $("#cboTrack").on("change", function () {
+        var track = $(this).val();
+        var school = $("#cboSchool").val();
+        loadData("filterComponent.php", "sheet2", "Strand", "#cboStrand", "Track", track);
+    });
+
+    $("#studentForm").submit(function (event) {
+        event.preventDefault(); // Prevent page reload
+
+        $.post("submitForm.php", $(this).serialize(), function (response) {
+            alert(response); // Show response from server
+        });
+    });
+    
+
+</script>
+
+</html>
