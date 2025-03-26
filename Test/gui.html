@@ -54,10 +54,10 @@
     loadData("filterComponent.php", "sheet2", "School", "#cboSchool");
 
     function loadData(url, table, field, selector, filterField = null, filterValue = null) {
-        $.post(url, { table, field, filterField, filterValue }, function (msg) {
-            alert(msg);
+        $.post(url, { table, field, filterField, filterValue }, function(msg) {
+            // alert(msg);
             var record = JSON.parse(msg);
-            var options = record.map(item => `<option>${ item[field] }</option>`).join("");
+            var options = record.map(item => `<option>${ item[field] }</option>`);
             $(selector).append(options);
         });
     }
@@ -71,7 +71,6 @@
 
     $("#cboTrack").on("change", function () {
         var track = $(this).val();
-        var school = $("#cboSchool").val();
         loadData("filterComponent.php", "sheet2", "Strand", "#cboStrand", "Track", track);
         $("#cboStrand").empty().append("<option>Select Strand</option>");
     });
